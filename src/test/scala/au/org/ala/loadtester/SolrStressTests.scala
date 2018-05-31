@@ -7,12 +7,12 @@ import io.gatling.http.Predef._
 
 class SolrStressTests extends Simulation {
 
-
   object Search {
 
-    val maxFacetCount = 1000
-    val feeder = tsv("./solr.q.all.log").circular
+    val logFileLocation = System.getProperty("au.org.ala.loadtester.solr.logfile")
 
+    val maxFacetCount = 1000
+    val feeder = tsv(logFileLocation).circular
 
     def applyFacetLimit(query:String, facetMax:Int): String ={
       val params = query.split("&").sorted
@@ -40,15 +40,16 @@ class SolrStressTests extends Simulation {
         .pause(1)
   }
 
+  val solrServers = System.getProperty("au.org.ala.loadtester.solr.servers").split(" ")
+
+  // Scala magic incantation ":_*" to convert the array from above to match the varargs method
   val httpProtocol = http
     .baseURLs(
-      "http://server1:8983",
-      "http://server2:8983",
+        solrServers:_*
     )
     .inferHtmlResources(BlackList( """.*\.js""", """.*\.css""", """.*\.css.*=.*""", """.*\.gif""", """.*\.jpeg""", """.*\.jpg""", """.*\.ico""", """.*\.woff""",
       """.*\.(t|o)tf""", """.*\.png"""),
       WhiteList()).disableWarmUp
-
 
   val solrTests = scenario("Users").exec(Search.search)
 
@@ -59,4 +60,3 @@ class SolrStressTests extends Simulation {
     holdFor(15 minutes)).maxDuration(60 minutes).protocols(httpProtocol)
 
 }
-
