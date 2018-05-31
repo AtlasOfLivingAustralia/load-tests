@@ -41,6 +41,8 @@ class SolrStressTests extends Simulation {
   }
 
   val solrServers = System.getProperty("au.org.ala.loadtester.solr.servers").split(" ")
+  
+  println(solrServers.mkString(","))
 
   // Scala magic incantation ":_*" to convert the array from above to match the varargs method
   val httpProtocol = http
