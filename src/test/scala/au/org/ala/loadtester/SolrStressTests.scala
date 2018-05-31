@@ -11,7 +11,8 @@ class SolrStressTests extends Simulation {
 
     val logFileLocation = System.getProperty("au.org.ala.loadtester.solr.logfile")
 
-    val maxFacetCount = 1000
+    val maxFacetCount = System.getProperty("au.org.ala.loadtester.solr.maxfacetcount", "1000").trim().stripPrefix("\"").stripSuffix("\"").toInt
+
     val feeder = tsv(logFileLocation).circular
 
     def applyFacetLimit(query:String, facetMax:Int): String ={
