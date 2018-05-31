@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<property name="DEV_HOME" value="./results" />
+
+	<contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+		<resetJUL>true</resetJUL>
+	</contextListener>
+
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%-5level] %logger{15} - %msg%n%rEx</pattern>
+		</encoder>
+		<immediateFlush>false</immediateFlush>
+	</appender>
+
+	<!-- Insert the current time formatted as "yyyyMMdd'T'HHmmss" under
+           the key "bySecond" into the logger context. This value will be
+           available to all subsequent configuration elements. -->
+	<timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss"/>
+
+	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+		<!-- use the previously created timestamp to create a uniquely
+             named log file -->
+		<file>${DEV_HOME}/gatling-${bySecond}.log</file>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>
+				%d{yyyy-MM-dd HH:mm:ss} - %msg%n
+			</Pattern>
+		</encoder>
+	</appender>
+
+	<!-- Uncomment for logging ALL HTTP request and responses -->
+	<!-- 	<logger name="io.gatling.http" level="TRACE" /> -->
+	<!-- Uncomment for logging ONLY FAILED HTTP request and responses -->
+	<logger name="io.gatling.http" level="DEBUG" />
+
+	<root level="WARN">
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILE" />
+	</root>
+
+</configuration>
