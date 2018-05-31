@@ -3,17 +3,20 @@
 
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+        <groupId>au.org.ala</groupId>
+        <artifactId>ala-parent-pom</artifactId>
+        <version>9</version>
+  </parent>
+
   <groupId>au.org.ala.loadtester</groupId>
-  <artifactId>loadTester</artifactId>
+  <artifactId>load-tester</artifactId>
   <version>0.1-SNAPSHOT</version>
 
   <name>LoadTester</name>
-  <url>https://github.com/AtlasOfLivingAustralia/loadtester</url>
+  <url>https://github.com/AtlasOfLivingAustralia/load-tests</url>
 
   <properties>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <gatling.version>2.3.1</gatling.version>
     <gatling-plugin.version>2.2.4</gatling-plugin.version>
     <scala-maven-plugin.version>3.3.1</scala-maven-plugin.version>
