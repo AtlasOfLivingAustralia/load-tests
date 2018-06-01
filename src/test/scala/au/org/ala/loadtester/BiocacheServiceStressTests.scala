@@ -9,7 +9,7 @@ class BiocacheServiceStressTests extends Simulation {
 
   object Search {
 
-    val logFileLocation = System.getProperty("au.org.ala.loadtester.solr.logfile")
+    val logFileLocation = System.getProperty("au.org.ala.loadtester.biocacheservice.logfile")
 
     val feeder = tsv(logFileLocation).circular
 
