@@ -5,7 +5,7 @@ import scala.concurrent.duration._
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 
-class SolrStressTests extends Simulation {
+class BiocacheServiceStressTests extends Simulation {
 
   object Search {
 
