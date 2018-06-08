@@ -98,6 +98,12 @@
         <groupId>io.gatling</groupId>
         <artifactId>gatling-maven-plugin</artifactId>
         <version>${gatling-plugin.version}</version>
+        <configuration>
+          <jvmArgs>
+            <jvmArg>-Xmx8096m</jvmArg>
+            <jvmArg>-Xms512m</jvmArg>
+          </jvmArgs>
+        </configuration>
       </plugin>
     </plugins>
   </build>
