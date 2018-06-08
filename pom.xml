@@ -99,6 +99,7 @@
         <artifactId>gatling-maven-plugin</artifactId>
         <version>${gatling-plugin.version}</version>
         <configuration>
+          <disableCompiler>true</disableCompiler>
           <jvmArgs>
             <jvmArg>-Xmx8096m</jvmArg>
             <jvmArg>-Xms512m</jvmArg>
