@@ -17,22 +17,54 @@
   <url>https://github.com/AtlasOfLivingAustralia/load-tests</url>
 
   <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <scala.version>2.12.4</scala.version>
     <gatling.version>2.3.1</gatling.version>
     <gatling-plugin.version>2.2.4</gatling-plugin.version>
     <scala-maven-plugin.version>3.3.1</scala-maven-plugin.version>
   </properties>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.gatling</groupId>
+        <artifactId>gatling-app</artifactId>
+        <version>${gatling.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.gatling</groupId>
+        <artifactId>gatling-recorder</artifactId>
+        <version>${gatling.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.gatling.highcharts</groupId>
+        <artifactId>gatling-charts-highcharts</artifactId>
+        <version>${gatling.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.scala-lang</groupId>
+        <artifactId>scala-library</artifactId>
+        <version>${scala.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <dependency>
       <groupId>io.gatling.highcharts</groupId>
       <artifactId>gatling-charts-highcharts</artifactId>
-      <version>${gatling.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.lemonlabs</groupId>
       <artifactId>scala-uri_2.12</artifactId>
       <version>1.1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.7</version>
     </dependency>
   </dependencies>
 
@@ -42,6 +74,25 @@
         <groupId>net.alchim31.maven</groupId>
         <artifactId>scala-maven-plugin</artifactId>
         <version>${scala-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+            <configuration>
+              <args>
+                <arg>-Ybackend:GenBCode</arg>
+                <arg>-Ydelambdafy:method</arg>
+                <arg>-target:jvm-1.8</arg>
+                <arg>-deprecation</arg>
+                <arg>-feature</arg>
+                <arg>-unchecked</arg>
+                <arg>-language:implicitConversions</arg>
+                <arg>-language:postfixOps</arg>
+              </args>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>io.gatling</groupId>
