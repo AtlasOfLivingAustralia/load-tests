@@ -13,10 +13,14 @@ class BiocacheServiceStressTests extends Simulation {
 
     val feeder = tsv(logFileLocation).circular
 
+    // Biocache-service has some methods that return 406 for the default "*/*", so customisation is necessary
+    val sentHeaders = Map("Accept" -> "application/json,image/png,application/xml;q=0.2,text/html;q=0.2,*/*;q=0.1")
+
     val search =
       feed(feeder)
         .exec(http("/")
           .get("${params}")
+          .headers(sentHeaders)
         )
         .pause(1)
   }
