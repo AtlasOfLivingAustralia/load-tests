@@ -33,6 +33,12 @@ class BiocacheServiceStressTests extends Simulation {
 
   val latterRequestsPerSecond = System.getProperty("au.org.ala.loadtester.biocacheservice.latterrequestspersecond", "50").trim().stripPrefix("\"").stripSuffix("\"").toInt
 
+  val peakDuration = System.getProperty("au.org.ala.loadtester.biocacheservice.peakduration", "45").trim().stripPrefix("\"").stripSuffix("\"").toInt
+
+  val latterDuration = System.getProperty("au.org.ala.loadtester.biocacheservice.latterduration", "15").trim().stripPrefix("\"").stripSuffix("\"").toInt
+
+  val maxDuration = System.getProperty("au.org.ala.loadtester.biocacheservice.maxduration", "60").trim().stripPrefix("\"").stripSuffix("\"").toInt
+
   println("Biocache Service Servers: " + biocacheServiceServers.mkString(","))
   println("Constant users per second: " + constantUsersPerSecond)
   println("Peak requests per second: " + peakRequestsPerSecond)
@@ -50,9 +56,9 @@ class BiocacheServiceStressTests extends Simulation {
   val biocacheServiceTests = scenario("Users").exec(Search.search)
 
   setUp(
-    biocacheServiceTests.inject(constantUsersPerSec(constantUsersPerSecond) during (60 minutes))).throttle(
-    reachRps(peakRequestsPerSecond) in (45 minutes),
+    biocacheServiceTests.inject(constantUsersPerSec(constantUsersPerSecond) during (maxDuration minutes))).throttle(
+    reachRps(peakRequestsPerSecond) in (peakDuration minutes),
     jumpToRps(latterRequestsPerSecond),
-    holdFor(15 minutes)).maxDuration(60 minutes).protocols(httpProtocol)
+    holdFor(latterDuration minutes)).maxDuration(maxDuration minutes).protocols(httpProtocol)
 
 }
