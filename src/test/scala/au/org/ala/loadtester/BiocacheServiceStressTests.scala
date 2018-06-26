@@ -43,6 +43,9 @@ class BiocacheServiceStressTests extends Simulation {
   println("Constant users per second: " + constantUsersPerSecond)
   println("Peak requests per second: " + peakRequestsPerSecond)
   println("Latter requests per second: " + latterRequestsPerSecond)
+  println("Peak duration (in minutes): " + peakDuration)
+  println("Latter duration (in minutes): " + latterDuration)
+  println("Max duration (in minutes): " + maxDuration)
 
   // Scala magic incantation ":_*" to convert the array from above to match the varargs method
   val httpProtocol = http
