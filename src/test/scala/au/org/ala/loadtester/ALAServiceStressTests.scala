@@ -5,11 +5,11 @@ import scala.concurrent.duration._
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 
-class BiocacheServiceStressTests extends Simulation {
+class ALAServiceStressTests extends Simulation {
 
   object Search {
 
-    val logFileLocation = System.getProperty("au.org.ala.loadtester.biocacheservice.logfile")
+    val logFileLocation = System.getProperty("au.org.ala.loadtester.alaservice.logfile")
 
     val feeder = tsv(logFileLocation).circular
 
@@ -25,21 +25,21 @@ class BiocacheServiceStressTests extends Simulation {
         .pause(1)
   }
 
-  val biocacheServiceServers = System.getProperty("au.org.ala.loadtester.biocacheservice.servers").trim().stripPrefix("\"").stripSuffix("\"").split(" ")
+  val alaServiceServers = System.getProperty("au.org.ala.loadtester.alaservice.servers").trim().stripPrefix("\"").stripSuffix("\"").split(" ")
 
-  val constantUsersPerSecond = System.getProperty("au.org.ala.loadtester.biocacheservice.constantuserspersecond", "100").trim().stripPrefix("\"").stripSuffix("\"").toInt
+  val constantUsersPerSecond = System.getProperty("au.org.ala.loadtester.alaservice.constantuserspersecond", "100").trim().stripPrefix("\"").stripSuffix("\"").toInt
 
-  val peakRequestsPerSecond = System.getProperty("au.org.ala.loadtester.biocacheservice.peakrequestspersecond", "100").trim().stripPrefix("\"").stripSuffix("\"").toInt
+  val peakRequestsPerSecond = System.getProperty("au.org.ala.loadtester.alaservice.peakrequestspersecond", "100").trim().stripPrefix("\"").stripSuffix("\"").toInt
 
-  val latterRequestsPerSecond = System.getProperty("au.org.ala.loadtester.biocacheservice.latterrequestspersecond", "50").trim().stripPrefix("\"").stripSuffix("\"").toInt
+  val latterRequestsPerSecond = System.getProperty("au.org.ala.loadtester.alaservice.latterrequestspersecond", "50").trim().stripPrefix("\"").stripSuffix("\"").toInt
 
-  val peakDuration = System.getProperty("au.org.ala.loadtester.biocacheservice.peakduration", "45").trim().stripPrefix("\"").stripSuffix("\"").toInt
+  val peakDuration = System.getProperty("au.org.ala.loadtester.alaservice.peakduration", "45").trim().stripPrefix("\"").stripSuffix("\"").toInt
 
-  val latterDuration = System.getProperty("au.org.ala.loadtester.biocacheservice.latterduration", "15").trim().stripPrefix("\"").stripSuffix("\"").toInt
+  val latterDuration = System.getProperty("au.org.ala.loadtester.alaservice.latterduration", "15").trim().stripPrefix("\"").stripSuffix("\"").toInt
 
-  val maxDuration = System.getProperty("au.org.ala.loadtester.biocacheservice.maxduration", "60").trim().stripPrefix("\"").stripSuffix("\"").toInt
+  val maxDuration = System.getProperty("au.org.ala.loadtester.alaservice.maxduration", "60").trim().stripPrefix("\"").stripSuffix("\"").toInt
 
-  println("Biocache Service Servers: " + biocacheServiceServers.mkString(","))
+  println("ALA Service Servers: " + alaServiceServers.mkString(","))
   println("Constant users per second: " + constantUsersPerSecond)
   println("Peak requests per second: " + peakRequestsPerSecond)
   println("Latter requests per second: " + latterRequestsPerSecond)
@@ -50,16 +50,16 @@ class BiocacheServiceStressTests extends Simulation {
   // Scala magic incantation ":_*" to convert the array from above to match the varargs method
   val httpProtocol = http
     .baseURLs(
-        biocacheServiceServers:_*
+        alaServiceServers:_*
     )
     .inferHtmlResources(BlackList( """.*\.js""", """.*\.css""", """.*\.css.*=.*""", """.*\.gif""", """.*\.jpeg""", """.*\.jpg""", """.*\.ico""", """.*\.woff""",
       """.*\.(t|o)tf""", """.*\.png"""),
       WhiteList()).disableWarmUp
 
-  val biocacheServiceTests = scenario("Users").exec(Search.search)
+  val alaServiceTests = scenario("Users").exec(Search.search)
 
   setUp(
-    biocacheServiceTests.inject(constantUsersPerSec(constantUsersPerSecond) during (maxDuration minutes))).throttle(
+    alaServiceTests.inject(constantUsersPerSec(constantUsersPerSecond) during (maxDuration minutes))).throttle(
     reachRps(peakRequestsPerSecond) in (peakDuration minutes),
     jumpToRps(latterRequestsPerSecond),
     holdFor(latterDuration minutes)).maxDuration(maxDuration minutes).protocols(httpProtocol)
